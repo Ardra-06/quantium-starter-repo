@@ -1,3 +1,16 @@
+import os
+import pandas as pd
+from dash import Dash, dcc, html
+import plotly.express as px
+
+# Get the folder containing app.py
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Build the full path to formatted_output.csv
+csv_path = os.path.join(BASE_DIR, "formatted_output.csv")
+
+# Read the processed data
+df = pd.read_csv(csv_path)
 import pandas as pd
 from dash import Dash, dcc, html
 import plotly.express as px
@@ -35,6 +48,15 @@ app.layout = html.Div([
         "Soul Foods Pink Morsel Sales Dashboard",
         id="dashboard-header"
     ),
+    dcc.Dropdown(
+    id="region-picker",
+    options=[
+        {"label": region, "value": region}
+        for region in sorted(df["Region"].unique())
+    ],
+    value=sorted(df["Region"].unique())[0],
+    clearable=False
+),
 
     dcc.Graph(
         id="sales-chart",
